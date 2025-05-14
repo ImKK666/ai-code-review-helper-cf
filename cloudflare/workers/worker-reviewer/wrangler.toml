@@ -14,10 +14,17 @@ kv_namespaces = [
 
 # 环境变量
 [vars]
-LLM_ENDPOINT = "https://api.openai.com/v1/chat/completions"
+# LLM_ENDPOINT - 可设置为任何符合 OpenAI 接口标准的 LLM API 端点
+# 示例：默认 OpenAI 接口 "https://api.openai.com/v1/chat/completions"
+# LLM_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 LLM_MODEL_NAME = "gpt-3.5-turbo"
+# GITLAB_BASE_URL - 自部署 GitLab 实例的基础 URL（不包含 /api/v4）
+# 示例：GITLAB_BASE_URL = "https://gitlab.example.com"
+# 默认使用公共 GitLab: https://gitlab.com
 
 # 敏感环境变量通过 GitHub Actions 传递，不要在这里设置
-# LLM_API_KEY
-# GITHUB_TOKEN
-# GITLAB_TOKEN
+# LLM_API_KEY - 访问 LLM API 的密钥
+# GITHUB_TOKEN - GitHub API 访问令牌
+# GITLAB_TOKEN - GitLab API 访问令牌
+# LLM_ENDPOINT - LLM API 端点 URL
+# GITLAB_BASE_URL - GitLab 基础 URL

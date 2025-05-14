@@ -34,6 +34,8 @@
 - GitHub 账户
 - OpenAI API 密钥或其他 LLM 服务密钥
 - GitHub 和/或 GitLab 访问令牌
+- 可选：自部署 GitLab 实例（如需集成）
+- 可选：符合 OpenAI 接口标准的自定义 LLM 服务
 
 ### 2. Cloudflare 资源设置
 
@@ -68,6 +70,8 @@
      - `GH_ACCESS_TOKEN`: GitHub 访问令牌
      - `GITLAB_TOKEN`: GitLab 访问令牌 (如果需要)
      - `REVIEW_RESULTS_KV_ID`: Cloudflare KV 命名空间 ID
+     - `LLM_ENDPOINT`: LLM API 端点 URL (可选，默认为 OpenAI)
+     - `GITLAB_BASE_URL`: GitLab 基础 URL (可选，用于自部署 GitLab 实例)
 
 ### 4. 部署过程
 
@@ -149,6 +153,27 @@
 2. Worker Webhook 会分析变更并提交审查任务到队列
 3. Worker Reviewer 处理任务，调用 LLM 进行代码审查
 4. 审查结果作为评论发布回 PR/MR
+
+## 高级配置
+
+### 自定义 LLM API 端点
+
+默认情况下，系统使用 OpenAI API 进行代码审查。您可以配置任何符合 OpenAI 接口标准的 LLM API:
+
+1. 在 GitHub 仓库的 Secrets 中设置 `LLM_ENDPOINT`:
+   - OpenAI API: `https://api.openai.com/v1/chat/completions`
+   - 或其他兼容的 API 端点
+
+2. 模型名称可通过 `LLM_MODEL_NAME` 环境变量或 wrangler.toml 中设置（默认为 "gpt-3.5-turbo"）
+
+### 自部署 GitLab 集成
+
+如果您使用自行部署的 GitLab 实例而非 gitlab.com，可进行以下配置:
+
+1. 在 GitHub 仓库的 Secrets 中设置 `GITLAB_BASE_URL`:
+   - 示例: `https://gitlab.example.com`（不包含末尾斜杠和 "/api/v4" 路径）
+
+2. 确保您的 GitLab 访问令牌具有适当的权限，并已在 Secrets 中设置为 `GITLAB_TOKEN`
 
 ## 许可证
 

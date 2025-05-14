@@ -6,8 +6,9 @@ export interface Env {
 	LLM_API_KEY: string;
 	GITHUB_TOKEN: string;
 	GITLAB_TOKEN: string;
-	LLM_ENDPOINT: string; 
+	LLM_ENDPOINT: string;
 	LLM_MODEL_NAME?: string;
+	GITLAB_BASE_URL?: string; // 支持自定义GitLab实例的基础URL
 }
 
 interface WebhookQueueMessage {
@@ -94,7 +95,7 @@ export default {
 						id: op.object_attributes.id, iid: op.object_attributes.iid, projectId: op.project.id,
 						headSha: op.object_attributes.last_commit?.id || op.object_attributes.diff_head_sha,
 						diffUrl: `${op.project.web_url}/-/merge_requests/${op.object_attributes.iid}/diffs.json`,
-						notesUrl: `https://gitlab.com/api/v4/projects/${op.project.id}/merge_requests/${op.object_attributes.iid}/notes`,
+						notesUrl: `${env.GITLAB_BASE_URL || 'https://gitlab.com'}/api/v4/projects/${op.project.id}/merge_requests/${op.object_attributes.iid}/notes`,
 					} : undefined,
 					reviewType: incomingMessageBody.reviewType || op.reviewType || 'general',
 					filesToReview: incomingMessageBody.filesToReview || op.filesToReview || [],
@@ -158,7 +159,7 @@ export default {
                                 id: incomingMessageBody.originalPayload.object_attributes.id, iid: incomingMessageBody.originalPayload.object_attributes.iid,
                                 projectId: incomingMessageBody.originalPayload.project.id, headSha: incomingMessageBody.originalPayload.object_attributes.last_commit?.id,
                                 diffUrl: `${incomingMessageBody.originalPayload.project.web_url}/-/merge_requests/${incomingMessageBody.originalPayload.object_attributes.iid}/diffs.json`,
-                                notesUrl: `https://gitlab.com/api/v4/projects/${incomingMessageBody.originalPayload.project.id}/merge_requests/${incomingMessageBody.originalPayload.object_attributes.iid}/notes`,
+                                notesUrl: `${env.GITLAB_BASE_URL || 'https://gitlab.com'}/api/v4/projects/${incomingMessageBody.originalPayload.project.id}/merge_requests/${incomingMessageBody.originalPayload.object_attributes.iid}/notes`,
                             } : undefined,
 						reviewType: incomingMessageBody.reviewType || 'general',
 						error: `Critical processing error before task formation: ${error.message}`,

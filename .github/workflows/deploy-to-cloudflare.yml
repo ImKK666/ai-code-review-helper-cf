@@ -34,6 +34,8 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          LLM_ENDPOINT: ${{ secrets.LLM_ENDPOINT }}
+          GITLAB_BASE_URL: ${{ secrets.GITLAB_BASE_URL }}
 
   deploy-worker-webhook:
     name: Deploy Worker Webhook
