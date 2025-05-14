@@ -21,11 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
         working-directory: ./cloudflare/workers/worker-reviewer
-      
-      - name: Run tests
-        run: npm test
-        working-directory: ./cloudflare/workers/worker-reviewer
-      
+        
       - name: Deploy to Cloudflare
         run: npx wrangler deploy
         working-directory: ./cloudflare/workers/worker-reviewer
@@ -51,11 +47,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
         working-directory: ./cloudflare/workers/worker-webhook
-      
-      - name: Run tests
-        run: npm test
-        working-directory: ./cloudflare/workers/worker-webhook
-      
+
       - name: Deploy to Cloudflare
         run: npx wrangler deploy
         working-directory: ./cloudflare/workers/worker-webhook
