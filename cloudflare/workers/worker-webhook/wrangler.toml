@@ -1,0 +1,9 @@
+name = "worker-webhook"
+main = "src/index.ts"
+compatibility_date = "2024-05-01"
+
+# 队列配置
+[[queues.consumers]]
+  queue = "review-tasks-queue"
+  max_batch_size = 10
+  max_batch_timeout = 30

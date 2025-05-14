@@ -1,0 +1,61 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-worker-reviewer:
+    name: Deploy Worker Reviewer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./cloudflare/workers/worker-reviewer
+      
+      - name: Run tests
+        run: npm test
+        working-directory: ./cloudflare/workers/worker-reviewer
+      
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        working-directory: ./cloudflare/workers/worker-reviewer
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+
+  deploy-worker-webhook:
+    name: Deploy Worker Webhook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./cloudflare/workers/worker-webhook
+      
+      - name: Run tests
+        run: npm test
+        working-directory: ./cloudflare/workers/worker-webhook
+      
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        working-directory: ./cloudflare/workers/worker-webhook
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

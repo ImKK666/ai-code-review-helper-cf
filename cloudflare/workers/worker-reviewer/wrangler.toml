@@ -1,0 +1,23 @@
+name = "worker-reviewer"
+main = "src/index.ts"
+compatibility_date = "2024-05-01"
+
+# KV 命名空间配置
+kv_namespaces = [
+  { binding = "REVIEW_RESULTS_KV", id = "$REVIEW_RESULTS_KV_ID" }
+]
+
+# 队列配置
+[[queues.producers]]
+  queue = "review-tasks-queue"
+  binding = "REVIEW_TASKS_QUEUE"
+
+# 环境变量
+[vars]
+LLM_ENDPOINT = "https://api.openai.com/v1/chat/completions"
+LLM_MODEL_NAME = "gpt-3.5-turbo"
+
+# 敏感环境变量通过 GitHub Actions 传递，不要在这里设置
+# LLM_API_KEY
+# GITHUB_TOKEN
+# GITLAB_TOKEN
